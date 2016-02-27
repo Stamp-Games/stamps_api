@@ -1,10 +1,13 @@
-from stamps_api import db
+from sqlalchemy import Column, String, Integer
+from stamps_api import Base
 
-class Stamp(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100))
-    origin = db.Column(db.String(100))
-    rarity = db.Column(db.String(100))
+
+class Stamp(Base):
+    __tablename__ = 'stamp'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(100))
+    origin = Column(String(100))
+    rarity = Column(String(100))
 
     def __repr__(self):
         return '<Stamp %r>' % (self.name)

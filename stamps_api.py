@@ -8,30 +8,42 @@ POST, UPDATE & DELETE requests will come as the data categories are flushed out.
 authored by Michael Nickey on February 26th 2016
 """
 # Todo(mnickey) : Add support to database to hold stamps rather than hard-coding them
-# Todo(mnickey) : create databse seed entries
+# Todo(mnickey) : create database seed entries
 # Todo(mnickey) : revamp endpoints to use SQLAlchemy
 # Todo(mnickey) : create POST request endpoint
 # Todo(mnickey) : create UPDATE endpoint
 # Todo(mnickey) : create DELETE endpoint
 
+import logging
 from flask import Flask, jsonify, abort, make_response, request
 from flask.ext.sqlalchemy import SQLAlchemy
-import logging
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.ext.declarative import declarative_base
+from config import SQLALCHEMY_DATABASE_URI
 
 # Traceback error seen here -- need to resolve also tried `import models`
 # Traceback also mentions from stamps_api import db on models.py file
-from models import Stamp
+# from . import Stamp
+
+engine = create_engine(SQLALCHEMY_DATABASE_URI)
+Base = declarative_base()
+db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False,
+                                         bind=engine))
+Base.query = db_session.query_property()
+conn = engine.connect()
 
 app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
 
-new_stamp = Stamp()
-new_stamp.name = 'my_name'
-new_stamp.origin = 'my_orgin'
-new_stamp.rarity = 'my_rarity'
-db.session.add(new_stamp)
-db.session.commit()
+# new_stamp = Stamp()
+# new_stamp.name = 'my_name'
+# new_stamp.origin = 'my_orgin'
+# new_stamp.rarity = 'my_rarity'
+#
+# db.session.add(new_stamp)
+# db.session.commit()
 
 # Logging Config
 logging.basicConfig(level=logging.INFO)
@@ -53,7 +65,20 @@ stamps = [
     }
 ]
 
+"""
+DATABASE FUNCTIONS
+"""
+def init_db():
+    Base.metadata.create_all(bind=engine)
 
+
+def query_db():
+    from models import Stamp
+    Stamp.query.all()
+
+"""
+API CALLS
+"""
 # Get all the stamps
 @app.route('/api/stamps/', methods=['GET'])
 def get_stamps():
@@ -78,3 +103,5 @@ def not_found(error):
 
 if __name__ == '__main__':
     app.run(debug=True)
+    init_db()
+    query_db()
