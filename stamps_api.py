@@ -18,11 +18,20 @@ from flask import Flask, jsonify, abort, make_response, request
 from flask.ext.sqlalchemy import SQLAlchemy
 import logging
 
+# Traceback error seen here -- need to resolve also tried `import models`
+# Traceback also mentions from stamps_api import db on models.py file
+from models import Stamp
+
 app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
 
-import models
+new_stamp = Stamp()
+new_stamp.name = 'my_name'
+new_stamp.origin = 'my_orgin'
+new_stamp.rarity = 'my_rarity'
+db.session.add(new_stamp)
+db.session.commit()
 
 # Logging Config
 logging.basicConfig(level=logging.INFO)
@@ -65,6 +74,7 @@ def get_stamps_by_id(stamp_id):
 @app.errorhandler(404)
 def not_found(error):
     return make_response(jsonify({'error': 'Not Found'}), 404)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
