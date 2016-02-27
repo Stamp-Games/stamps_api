@@ -7,7 +7,9 @@ The API is to allow for GET requests that will fetch populated data and save tha
 POST, UPDATE & DELETE requests will come as the data categories are flushed out.
 authored by Michael Nickey on February 26th 2016
 """
-# Todo(mnickey) : create database to hold tasks -- top priority
+# Todo(mnickey) : Add support to database to hold stamps rather than hard coding them
+# Todo(mnickey) : create databse seed entries
+# Todo(mnickey) : revamp endpoints to use SQLAlchemy
 # Todo(mnickey) : create POST request endpoint
 # Todo(mnickey) : create UPDATE endpoint
 # Todo(mnickey) : create DELETE endpoint
