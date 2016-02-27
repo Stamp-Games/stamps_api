@@ -13,9 +13,16 @@ authored by Michael Nickey on February 26th 2016
 # Todo(mnickey) : create DELETE endpoint
 
 from flask import Flask, jsonify, abort, make_response, request
+from flask.ext.sqlalchemy import SQLAlchemy
 import logging
 
 app = Flask(__name__)
+app.config.from_object('config')
+db = SQLAlchemy(app)
+
+import models
+
+# Logging Config
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
