@@ -9,5 +9,8 @@ class Stamp(Base):
     origin = Column(String(100))
     rarity = Column(String(100))
 
-    def __repr__(self):
-        return '<Stamp %r>' % (self.name)
+    def to_dict(self):
+        return { "id": self.id, "name": self.name, "origin": self.origin, "rarity": self.rarity }
+
+    # def __repr__(self):
+    #     return '<Stamp %r>' % (self.name)

@@ -13,37 +13,14 @@ authored by Michael Nickey on February 26th 2016
 # Todo(mnickey) : create POST request endpoint
 # Todo(mnickey) : create UPDATE endpoint
 # Todo(mnickey) : create DELETE endpoint
-
+import json
 import logging
 from flask import Flask, jsonify, abort, make_response, request
-from flask.ext.sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session
-from sqlalchemy.ext.declarative import declarative_base
-from config import SQLALCHEMY_DATABASE_URI
-
-# Traceback error seen here -- need to resolve also tried `import models`
-# Traceback also mentions from stamps_api import db on models.py file
-# from . import Stamp
-
-engine = create_engine(SQLALCHEMY_DATABASE_URI)
-Base = declarative_base()
-db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False,
-                                         bind=engine))
-Base.query = db_session.query_property()
-conn = engine.connect()
+from config import *
 
 app = Flask(__name__)
 app.config.from_object('config')
 db = SQLAlchemy(app)
-
-# new_stamp = Stamp()
-# new_stamp.name = 'my_name'
-# new_stamp.origin = 'my_orgin'
-# new_stamp.rarity = 'my_rarity'
-#
-# db.session.add(new_stamp)
-# db.session.commit()
 
 # Logging Config
 logging.basicConfig(level=logging.INFO)
@@ -54,13 +31,13 @@ stamps = [
     {
         "id": 1,
         "name": "My first stamp",
-        "orgin": "Unicorn Nightmares",
+        "origin": "Unicorn Nightmares",
         "rarity": "very rare"
     },
     {
         "id": 2,
         "name": "My second Stanp",
-        "orgin": "Heavens Breath",
+        "origin": "Heavens Breath",
         "rarity": "common"
     }
 ]
@@ -68,20 +45,25 @@ stamps = [
 """
 DATABASE FUNCTIONS
 """
-def init_db():
-    Base.metadata.create_all(bind=engine)
+
+
+# def init_db():
+#     Base.metadata.create_all(bind=engine)
 
 
 def query_db():
     from models import Stamp
-    Stamp.query.all()
+    stamp_query = Stamp.query.all()
+    return stamp_query
 
 """
 API CALLS
 """
-# Get all the stamps
+
+
 @app.route('/api/stamps/', methods=['GET'])
 def get_stamps():
+    # Get all the stamps
     return jsonify({'stamps': stamps[:]})
 
 
@@ -103,5 +85,4 @@ def not_found(error):
 
 if __name__ == '__main__':
     app.run(debug=True)
-    init_db()
-    query_db()
+    print query_db()
