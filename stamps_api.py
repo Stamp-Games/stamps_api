@@ -15,10 +15,12 @@ authored by Michael Nickey on February 26th 2016
 # Todo(mnickey) : create DELETE endpoint
 import json
 import logging
+import pprint as pprint
 from flask import Flask, jsonify, abort, make_response, request
 from config import *
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config.from_object('config')
 db = SQLAlchemy(app)
 
@@ -47,14 +49,12 @@ DATABASE FUNCTIONS
 """
 
 
-# def init_db():
-#     Base.metadata.create_all(bind=engine)
-
-
 def query_db():
+    logger.info("Logging stamps...")
     from models import Stamp
     stamp_query = Stamp.query.all()
-    return stamp_query
+    results = [stamp.to_dict() for stamp in stamp_query]
+    return json.dumps(results)
 
 """
 API CALLS
@@ -85,4 +85,6 @@ def not_found(error):
 
 if __name__ == '__main__':
     app.run(debug=True)
+    print type(query_db())
+    # print json.dumps(query_db())
     print query_db()
