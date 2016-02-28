@@ -56,6 +56,13 @@ def query_db():
     results = [stamp.to_dict() for stamp in stamp_query]
     return json.dumps(results)
 
+
+def query_db_to_json():
+    f = open('stamps.json', 'w')
+    json.dump(query_db(), f, indent=2)
+    f.close()
+    return f
+
 """
 API CALLS
 """
@@ -85,6 +92,7 @@ def not_found(error):
 
 if __name__ == '__main__':
     app.run(debug=True)
-    print type(query_db())
+    # print type(query_db())
     # print json.dumps(query_db())
     print query_db()
+    print query_db_to_json()
