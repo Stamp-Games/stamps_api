@@ -15,9 +15,9 @@ authored by Michael Nickey on February 26th 2016
 # Todo(mnickey) : create DELETE endpoint
 import json
 import logging
-import pprint as pprint
 from flask import Flask, jsonify, abort, make_response, request
 from config import *
+from models import Stamp
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
@@ -47,30 +47,28 @@ stamps = [
 """
 DATABASE FUNCTIONS
 """
-
-
+# Get all the stamps from the database
 def query_db():
     logger.info("Logging stamps...")
-    from models import Stamp
     stamp_query = Stamp.query.all()
     results = [stamp.to_dict() for stamp in stamp_query]
     return json.dumps(results)
 
 
+# Write all the stamps from the database into a JSON file
 def query_db_to_json():
     f = open('stamps.json', 'w')
     json.dump(query_db(), f, indent=2)
     f.close()
     return f
 
+
 """
 API CALLS
 """
-
-
+# Get all the stamps
 @app.route('/api/stamps/', methods=['GET'])
 def get_stamps():
-    # Get all the stamps
     return jsonify({'stamps': stamps[:]})
 
 

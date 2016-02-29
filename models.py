@@ -1,6 +1,5 @@
 from sqlalchemy import Column, String, Integer
-from stamps_api import Base
-
+from config import Base
 
 class Stamp(Base):
     __tablename__ = 'stamp'
