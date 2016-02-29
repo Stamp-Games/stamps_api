@@ -2,3 +2,4 @@ env
 *.py[cod]
 .idea/
 *.log
+*.json
