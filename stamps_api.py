@@ -1,4 +1,4 @@
-#!flask/bin/python
+#!/usr/bin/env python3
 
 """
 Description: This API is part of the Thinkful Stamps project.
@@ -90,7 +90,7 @@ def not_found(error):
 
 if __name__ == '__main__':
     app.run(debug=True)
-    # print type(query_db())
-    # print json.dumps(query_db())
-    print query_db()
-    print query_db_to_json()
+    # print(type(query_db()))
+    # print(json.dumps(query_db()))
+    print(query_db())
+    print(query_db_to_json())

@@ -12,6 +12,8 @@ GET requests are working with pre-populated data.
 Currenty this is LHO (Local Host Only). To use please follow these steps.  
 * clone this repository  
 * assure that you are in the same directory you cloned this project to  
+* create a virtual environment `python3 -m venv env`  
+* install required packages `pip install -r requirements.txt`  
 * launch the API by typing `python stamps.api`  
 * navigate your web-browser to `http://127.0.0.1:5000/api/stamps/`  
 
