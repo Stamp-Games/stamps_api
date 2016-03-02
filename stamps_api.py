@@ -16,13 +16,15 @@ authored by Michael Nickey on February 26th 2016
 import json
 import logging
 from flask import Flask, jsonify, abort, make_response, request
-from config import *
-from models import Stamp
+from database import Stamp
+from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
-app.config.from_object('config')
+app.config.from_object('database')
 db = SQLAlchemy(app)
+# db.create_all()
+
 
 # Logging Config
 logging.basicConfig(level=logging.INFO)
@@ -35,12 +37,6 @@ stamps = [
         "name": "My first stamp",
         "origin": "Unicorn Nightmares",
         "rarity": "very rare"
-    },
-    {
-        "id": 2,
-        "name": "My second Stanp",
-        "origin": "Heavens Breath",
-        "rarity": "common"
     }
 ]
 
@@ -90,7 +86,5 @@ def not_found(error):
 
 if __name__ == '__main__':
     app.run(debug=True)
-    # print(type(query_db()))
-    # print(json.dumps(query_db()))
-    print(query_db())
-    print(query_db_to_json())
+    # print(query_db())
+    # print(query_db_to_json())
