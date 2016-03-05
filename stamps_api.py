@@ -280,6 +280,17 @@ def not_found(error):
     return make_response(jsonify({'error': 'Not Found'}), 404)
 
 
+# Get stamp by state name
+@app.route('/api/stamps/<state>/', methods=['GET'])
+def get_stamps_by_name(state):
+    logger.info("Collecting matching stamps with that name...")
+    state = state.capitalize()
+    stamp = [stamp for stamp in all_stamps if stamp['state'] == state ]
+    if len(stamp) == 0:
+        abort(404)
+    return json.dumps({'stamps': stamp})
+
+
 if __name__ == '__main__':
     # load_stamps()
     all_stamps = json.loads(query_db())
