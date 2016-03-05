@@ -10,23 +10,24 @@ from sqlalchemy import Column, String, Integer, Float
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'stamps.db')
-SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
+# SQLALCHEMY_MIGRATE_REPO = os.path.join(basedir, 'db_repository')
 engine = create_engine(SQLALCHEMY_DATABASE_URI, echo=False)
 Base = declarative_base()
 db_session = scoped_session(sessionmaker(autocommit=False, autoflush=False, bind=engine))
 
-if not os.path.exists(SQLALCHEMY_MIGRATE_REPO):
-    api.create(SQLALCHEMY_MIGRATE_REPO, 'database repository')
-    api.version_control(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO)
-else:
-    api.version_control(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO,
-                        api.version(SQLALCHEMY_MIGRATE_REPO))
+# if not os.path.exists(SQLALCHEMY_MIGRATE_REPO):
+#     api.create(SQLALCHEMY_MIGRATE_REPO, 'database repository')
+#     api.version_control(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO)
+# else:
+#     api.version_control(SQLALCHEMY_DATABASE_URI, SQLALCHEMY_MIGRATE_REPO,
+#                         api.version(SQLALCHEMY_MIGRATE_REPO))
 
 class Stamp(Base):
     __tablename__ = 'stamp'
     id = Column(Integer, primary_key=True, index=True)
     state = Column(String(30))
     state_abbr = Column(String(2))
+    stamp_url = Column(String(300))
     stamp_name = Column(String(100))
     blurb = Column(String(500))
     date_issued = Column(String(20))
