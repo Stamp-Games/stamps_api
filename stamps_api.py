@@ -16,12 +16,13 @@ import logging
 from flask import Flask, jsonify, abort, make_response, request
 from database import Stamp
 from flask.ext.sqlalchemy import SQLAlchemy
+import pprint
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config.from_object('database')
 db = SQLAlchemy(app)
-# db.create_all()
+pp = pprint.PrettyPrinter(indent=4)
 
 
 # Logging Config
@@ -53,7 +54,7 @@ def query_db_to_json():
 def load_stamps():
     al_stamp = Stamp(state="Alabama", state_abbr="AL", stamp_url="/images/alabama-stamp.jpg",
                      stamp_name="alabama-stamp", blurb="This is the Alabama state stamp.",
-                     date_issued="", country="United States", value="0.34")
+                     date_issued="", country="United States", value="0.35")
     db.session.add(al_stamp)
     ak_stamp = Stamp(state="Alaska", state_abbr="AK", stamp_url="/images/alaska-stamp.jpg",
                      stamp_name="alaska-stamp", blurb="This is the Alaska state stamp.",
@@ -291,6 +292,16 @@ def get_stamps_by_name(state):
     return json.dumps({'stamps': stamp})
 
 
+# Get stamps by value -- greater than or equal to the variable in the url
+@app.route('/api/stamps/value/<value>/', methods=['GET'])
+def get_stamps_by_value(value):
+    logger.info("Collecting stamps by value greater or equal to " + value + ".")
+    stamp = [stamp for stamp in all_stamps if str(stamp['value']) >= value]
+    if len(stamp) == 0:
+        abort(404)
+    return json.dumps({'stamp': stamp}, indent=4, separators=(',', ': '))
+
+
 # Get states that have a common letter or string
 @app.route('/api/stamps/letter/<letter>/', methods=['GET'])
 def get_stamps_by_common_letter(letter):
@@ -302,8 +313,6 @@ def get_stamps_by_common_letter(letter):
     return json.dumps({'stamps': stamp}, indent=4, separators=(',', ': '))
 
 if __name__ == '__main__':
-    # load_stamps()
+    # load_stamps()   # To be used only if the database needs to be reinitialized as all update info will be lost.
     all_stamps = json.loads(query_db())
     app.run(debug=True)
-    # print(query_db())
-    # print(query_db_to_json())
