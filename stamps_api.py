@@ -7,8 +7,6 @@ The API is to allow for GET requests that will fetch populated data and save tha
 POST, UPDATE & DELETE requests will come as the data categories are flushed out.
 authored by Michael Nickey on February 26th 2016
 """
-# Todo(mnickey) : Add support to database to hold stamps rather than hard-coding them
-# Todo(mnickey) : create database seed entries
 # Todo(mnickey) : revamp endpoints to use SQLAlchemy
 # Todo(mnickey) : create POST request endpoint
 # Todo(mnickey) : create UPDATE endpoint
@@ -30,12 +28,12 @@ db = SQLAlchemy(app)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-version = 1
-
 
 """
 DATABASE FUNCTIONS
 """
+
+
 # Get all the stamps from the database
 def query_db():
     logger.info("Logging stamps...")
@@ -258,6 +256,8 @@ def load_stamps():
 """
 API CALLS
 """
+
+
 # Get all the stamps
 @app.route('/api/stamps/', methods=['GET'])
 def get_stamps():
@@ -276,20 +276,30 @@ def get_stamps_by_id(stamp_id):
 
 # Error handling for stamps not found by API request
 @app.errorhandler(404)
-def not_found(error):
+def not_found(error=404):
     return make_response(jsonify({'error': 'Not Found'}), 404)
 
 
 # Get stamp by state name
-@app.route('/api/stamps/<state>/', methods=['GET'])
+@app.route('/api/stamps/state/<state>/', methods=['GET'])
 def get_stamps_by_name(state):
     logger.info("Collecting matching stamps with that name...")
     state = state.capitalize()
-    stamp = [stamp for stamp in all_stamps if stamp['state'] == state ]
+    stamp = [stamp for stamp in all_stamps if stamp['state'] == state]
     if len(stamp) == 0:
         abort(404)
     return json.dumps({'stamps': stamp})
 
+
+# Get states that have a common letter or string
+@app.route('/api/stamps/letter/<letter>/', methods=['GET'])
+def get_stamps_by_common_letter(letter):
+    logger.info("Collecting stamps with a common or string of '" + letter + "'")
+    letter = letter.lower()
+    stamp = [stamp for stamp in all_stamps if letter in stamp['state'][:].lower()]
+    if len(stamp) == 0:
+        abort(404)
+    return json.dumps({'stamps': stamp}, indent=4, separators=(',', ': '))
 
 if __name__ == '__main__':
     # load_stamps()
