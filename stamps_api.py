@@ -13,7 +13,7 @@ authored by Michael Nickey on February 26th 2016
 # Todo(mnickey) : create DELETE endpoint
 import json
 import logging
-from flask import Flask, jsonify, abort, make_response, request
+from flask import Flask, jsonify, abort, make_response, request, render_template
 from database import Stamp
 from flask.ext.sqlalchemy import SQLAlchemy
 import pprint
@@ -28,6 +28,16 @@ pp = pprint.PrettyPrinter(indent=4)
 # Logging Config
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+"""
+WEB PAGES
+"""
+
+
+@app.route('/index/', methods=['GET'])
+def show_index():
+    return render_template('main.html')
 
 
 """
