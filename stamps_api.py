@@ -35,7 +35,7 @@ WEB PAGES
 """
 
 
-@app.route('/index/', methods=['GET'])
+@app.route('/stamps/index/', methods=['GET'])
 def show_index():
     return render_template('main.html')
 
@@ -276,13 +276,21 @@ def get_stamps():
 
 
 # Get the stamp by stamp ID
-@app.route('/api/stamps/<int:stamp_id>/', methods=['GET'])
+@app.route('/api/stamps/<int:stamp_id>/', methods=['GET', 'POST'])
 def get_stamps_by_id(stamp_id):
-    logger.info('\nCollecting matching stamp...')
-    stamp = [stamp for stamp in all_stamps if stamp['id'] == stamp_id]
-    if len(stamp) == 0:
-        abort(404)
-    return json.dumps({'stamps': stamp})
+    if request.method == 'GET':
+        logger.info("in the GET method")
+        stamp = [stamp for stamp in all_stamps if stamp['id'] == stamp_id]
+        if len(stamp) == 0:
+            abort(404)
+        return json.dumps({'stamps': stamp})
+    if request.method == 'POST':
+        logger.info("in the POST method")
+        stamp_id = request.form('fetch_stamp')
+        stamp = [stamp for stamp in all_stamps if stamp['id'] == stamp_id]
+        if len(stamp) == 0:
+            abort(404)
+        return json.dumps({'stamps': stamp})
 
 
 # Error handling for stamps not found by API request
