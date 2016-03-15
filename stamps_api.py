@@ -276,17 +276,9 @@ def get_stamps():
 
 
 # Get the stamp by stamp ID
-@app.route('/api/stamps/<int:stamp_id>/', methods=['GET', 'POST'])
+@app.route('/api/stamps/<int:stamp_id>/', methods=['GET', 'POST']) #Post conditional to be added if needed
 def get_stamps_by_id(stamp_id):
-    if request.method == 'GET':
         logger.info("in the GET method")
-        stamp = [stamp for stamp in all_stamps if stamp['id'] == stamp_id]
-        if len(stamp) == 0:
-            abort(404)
-        return json.dumps({'stamps': stamp})
-    if request.method == 'POST':
-        logger.info("in the POST method")
-        stamp_id = request.form('fetch_stamp')
         stamp = [stamp for stamp in all_stamps if stamp['id'] == stamp_id]
         if len(stamp) == 0:
             abort(404)
