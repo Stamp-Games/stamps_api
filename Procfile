@@ -1,1 +1,1 @@
-web: gunicorn stamps_api.app --log-file -
+web: gunicorn stamps_api.wsgi --log-file -
