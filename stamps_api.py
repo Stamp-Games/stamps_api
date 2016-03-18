@@ -322,6 +322,6 @@ def get_stamps_by_common_letter(letter):
     return json.dumps({'stamps': stamp}, indent=4, separators=(',', ': '))
 
 if __name__ == '__main__':
-    # load_stamps()   # To be used only if the database needs to be reinitialized as all update info will be lost.
+    load_stamps()   # To be used only if the database needs to be reinitialized as all update info will be lost.
     all_stamps = json.loads(query_db())
     app.run(debug=True)
