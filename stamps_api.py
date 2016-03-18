@@ -33,7 +33,7 @@ logger = logging.getLogger(__name__)
 WEB PAGES
 """
 
-
+@app.route('/', methods=['GET'])
 @app.route('/stamps/index/', methods=['GET'])
 def show_index():
     return render_template('main.html')
