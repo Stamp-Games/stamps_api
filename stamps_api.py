@@ -271,6 +271,7 @@ API CALLS
 # Get all the stamps
 @app.route('/api/stamps/', methods=['GET'])
 def get_stamps():
+    all_stamps = json.loads(query_db())
     return json.dumps({'stamps': all_stamps[:]})
 
 
@@ -278,6 +279,7 @@ def get_stamps():
 @app.route('/api/stamps/<int:stamp_id>/', methods=['GET', 'POST']) #Post conditional to be added if needed
 def get_stamps_by_id(stamp_id):
         logger.info("in the GET method")
+        all_stamps = json.loads(query_db())
         stamp = [stamp for stamp in all_stamps if stamp['id'] == stamp_id]
         if len(stamp) == 0:
             abort(404)
