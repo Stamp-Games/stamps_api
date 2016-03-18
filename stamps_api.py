@@ -23,7 +23,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config.from_object('database')
 db = SQLAlchemy(app)
 pp = pprint.PrettyPrinter(indent=4)
-PORT = os.environ["PORT"]
 
 # Logging Config
 logging.basicConfig(level=logging.INFO)
@@ -327,4 +326,5 @@ def get_stamps_by_common_letter(letter):
 if __name__ == '__main__':
     load_stamps()   # To be used only if the database needs to be reinitialized as all update info will be lost.
     all_stamps = json.loads(query_db())
+    PORT = int(os.environ["PORT"], 5000)
     app.run(debug=True, port=PORT)

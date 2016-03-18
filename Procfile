@@ -1,1 +1,1 @@
-web: gunicorn stamps_api.app --log-file -
+web: python stamps_api/stamps_api.py
