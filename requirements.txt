@@ -13,3 +13,6 @@ sqlalchemy-migrate==0.10.0
 sqlparse==0.1.18
 Tempita==0.5.2
 Werkzeug==0.11.4
+jsonschema
+psycopg2
+flask-script
