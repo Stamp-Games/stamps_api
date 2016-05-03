@@ -15,3 +15,4 @@ Tempita==0.5.2
 Werkzeug==0.11.4
 jsonschema
 psycopg2
+flask-script

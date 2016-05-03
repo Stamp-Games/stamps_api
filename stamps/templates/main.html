@@ -2,12 +2,15 @@
 {% block title %}This is an example page{% endblock %}
 
 {% block content %}
+<h1>Welcome to the Stamp API homepage. </h1>
+
+<!--
     <a class="btn btn-default" href = "{{ url_for('get_stamps') }}">Get Stamps</a>
     <br><br>
     <form>
         <input type="text" name="fetch_stamp_by_id" placeholder="Enter a stamp ID">
         <a class="btn btn-default"
-           href = "{{ url_for('get_stamps_by_id', stamp_id=(5) ) }}">Get Stamps By ID</a>
+           href = "{{ url_for('get_stamps') }}">Get Stamps By ID</a>
     </form>
-
+-->
 {% endblock %}
