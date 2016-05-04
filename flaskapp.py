@@ -75,6 +75,8 @@ class Question(Base):
             "correct answer":self.correct_answer,
             "answers":self.answers.split(',')
             }
+            
+Base.metadata.create_all(engine)
 """
 WEB PAGES
 """
